@@ -1,7 +1,7 @@
-diff -Naur genkernel-4.1.0.orig/defaults/initrd.scripts genkernel-4.1.0/defaults/initrd.scripts
---- genkernel-4.1.0.orig/defaults/initrd.scripts	2020-08-10 18:19:15.000000000 +0900
-+++ genkernel-4.1.0/defaults/initrd.scripts	2020-08-21 17:45:37.978449548 +0900
-@@ -1781,6 +1781,12 @@
+diff -Naur genkernel-4.1.2.orig/defaults/initrd.scripts genkernel-4.1.2/defaults/initrd.scripts
+--- genkernel-4.1.2.orig/defaults/initrd.scripts	2020-08-29 06:33:36.000000000 +0900
++++ genkernel-4.1.2/defaults/initrd.scripts	2020-09-01 18:56:14.247756642 +0900
+@@ -1795,6 +1795,12 @@
  	local DEV_ERROR=0 KEY_ERROR=0 KEYDEV_ERROR=0
  	local mntkey="/mnt/key/" crypt_filter_ret=
  
@@ -14,7 +14,7 @@ diff -Naur genkernel-4.1.0.orig/defaults/initrd.scripts genkernel-4.1.0/defaults
  	while true
  	do
  		local cryptsetup_options=''
-@@ -2279,7 +2285,11 @@
+@@ -2296,7 +2302,11 @@
  
  	if [ -n "${CRYPT_ROOT}" ]
  	then
@@ -27,7 +27,7 @@ diff -Naur genkernel-4.1.0.orig/defaults/initrd.scripts genkernel-4.1.0/defaults
  		if [ -n "${REAL_ROOT}" ]
  		then
  			# Rescan volumes
-@@ -2329,6 +2339,7 @@
+@@ -2346,6 +2356,7 @@
  	write_env_file \
  		"${CRYPT_ENV_FILE}" \
  		CRYPT_ROOT \
@@ -35,10 +35,10 @@ diff -Naur genkernel-4.1.0.orig/defaults/initrd.scripts genkernel-4.1.0/defaults
  		CRYPT_ROOT_TRIM \
  		CRYPT_SILENT \
  		CRYPT_SWAP
-diff -Naur genkernel-4.1.0.orig/defaults/linuxrc genkernel-4.1.0/defaults/linuxrc
---- genkernel-4.1.0.orig/defaults/linuxrc	2020-08-10 18:19:15.000000000 +0900
-+++ genkernel-4.1.0/defaults/linuxrc	2020-08-21 17:45:37.978449548 +0900
-@@ -242,8 +242,9 @@
+diff -Naur genkernel-4.1.2.orig/defaults/linuxrc genkernel-4.1.2/defaults/linuxrc
+--- genkernel-4.1.2.orig/defaults/linuxrc	2020-08-29 06:33:36.000000000 +0900
++++ genkernel-4.1.2/defaults/linuxrc	2020-09-01 18:56:14.247756642 +0900
+@@ -243,8 +243,9 @@
  			ISCSI_NOIBFT=1
  		;;
  		# Crypto
