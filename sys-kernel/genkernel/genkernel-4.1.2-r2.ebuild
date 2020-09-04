@@ -120,7 +120,10 @@ if [[ ${PV} == 9999* ]]; then
 	DEPEND="${DEPEND} app-text/asciidoc"
 fi
 
-PATCHES=( "${FILESDIR}"/${P}-post-release-fixes.patch )
+PATCHES=(
+	"${FILESDIR}"/${P}-post-release-fixes.patch
+	"${FILESDIR}"/add-crypt-roots-support-${PV}.patch
+)
 
 src_unpack() {
 	if [[ ${PV} == 9999* ]]; then
@@ -186,8 +189,6 @@ src_prepare() {
 		-e "s:VERSION_ZSTD:${VERSION_ZSTD}:"\
 		"${S}"/defaults/software.sh \
 		|| die "Could not adjust versions"
-
-	eapply "${FILESDIR}/add-crypt-roots-support-${PV}.patch"
 }
 
 src_compile() {
