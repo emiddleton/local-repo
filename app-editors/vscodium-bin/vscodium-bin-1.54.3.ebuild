@@ -20,7 +20,7 @@ RESTRICT="mirror strip bindist"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64" # ~arm
+KEYWORDS="~amd64 ~arm64" # ~arm"
 IUSE="pax_kernel"
 
 DEPEND="
