@@ -11,10 +11,10 @@ DESCRIPTION="Free/Libre Open Source Software Binaries of VSCode (binary version)
 HOMEPAGE="https://vscodium.com"
 
 SRC_URI="
-	amd64? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-x64-${PV}.tar.gz )
-	arm64? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-arm64-${PV}.tar.gz )
+	amd64? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-x64-${PV}.tar.gz -> ${P}-amd64.tar.gz )
+	arm? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-armhf-${PV}.tar.gz -> ${P}-arm.tar.gz )
+	arm64? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-arm64-${PV}.tar.gz -> ${P}-arm64.tar.gz )
 	"
-	#arm? ( https://github.com/VSCodium/vscodium/releases/download/${PV}/VSCodium-linux-arm-${PV}.tar.gz )
 
 RESTRICT="mirror strip bindist"
 
