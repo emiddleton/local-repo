@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # genkernel-9999        -> latest Git branch "master"
@@ -6,23 +6,23 @@
 
 EAPI="7"
 
-PYTHON_COMPAT=( python3_{7..10} )
+PYTHON_COMPAT=( python3_{9..11} )
 
 inherit bash-completion-r1 python-single-r1
 
 # Whenever you bump a GKPKG, check if you have to move
 # or add new patches!
 VERSION_BCACHE_TOOLS="1.0.8_p20141204"
-VERSION_BOOST="1.76.0"
-VERSION_BTRFS_PROGS="5.12.1"
-VERSION_BUSYBOX="1.33.1"
+VERSION_BOOST="1.79.0"
+VERSION_BTRFS_PROGS="5.15"
+VERSION_BUSYBOX="1.34.1"
 VERSION_COREUTILS="8.32"
-VERSION_CRYPTSETUP="2.3.6"
+VERSION_CRYPTSETUP="2.4.1"
 VERSION_DMRAID="1.0.0.rc16-3"
 VERSION_DROPBEAR="2020.81"
 VERSION_EUDEV="3.2.10"
 VERSION_EXPAT="2.4.1"
-VERSION_E2FSPROGS="1.46.2"
+VERSION_E2FSPROGS="1.46.4"
 VERSION_FUSE="2.9.9"
 VERSION_GPG="1.4.23"
 VERSION_HWIDS="20210613"
@@ -30,25 +30,26 @@ VERSION_ISCSI="2.0.878"
 VERSION_JSON_C="0.13.1"
 VERSION_KMOD="29"
 VERSION_LIBAIO="0.3.112"
-VERSION_LIBGCRYPT="1.9.3"
-VERSION_LIBGPGERROR="1.42"
-VERSION_LIBXCRYPT="4.4.23"
+VERSION_LIBGCRYPT="1.9.4"
+VERSION_LIBGPGERROR="1.43"
+VERSION_LIBXCRYPT="4.4.26"
 VERSION_LVM="2.02.188"
 VERSION_LZO="2.10"
 VERSION_MDADM="4.1"
 VERSION_POPT="1.18"
-VERSION_STRACE="5.12"
+VERSION_STRACE="5.14"
 VERSION_THIN_PROVISIONING_TOOLS="0.9.0"
 VERSION_UNIONFS_FUSE="2.0"
-VERSION_UTIL_LINUX="2.37"
-VERSION_XFSPROGS="5.12.0"
+VERSION_UTIL_LINUX="2.37.2"
+VERSION_XFSPROGS="5.13.0"
 VERSION_XZ="5.2.5"
 VERSION_ZLIB="1.2.11"
 VERSION_ZSTD="1.5.0"
+VERSION_KEYUTILS="1.6.3"
 
 COMMON_URI="
 	https://github.com/g2p/bcache-tools/archive/399021549984ad27bf4a13ae85e458833fe003d7.tar.gz -> bcache-tools-${VERSION_BCACHE_TOOLS}.tar.gz
-	https://dl.bintray.com/boostorg/release/${VERSION_BOOST}/source/boost_${VERSION_BOOST//./_}.tar.bz2
+	https://boostorg.jfrog.io/artifactory/main/release/${VERSION_BOOST}/source/boost_${VERSION_BOOST//./_}.tar.bz2
 	https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v${VERSION_BTRFS_PROGS}.tar.xz
 	https://www.busybox.net/downloads/busybox-${VERSION_BUSYBOX}.tar.bz2
 	mirror://gnu/coreutils/coreutils-${VERSION_COREUTILS}.tar.xz
@@ -80,6 +81,7 @@ COMMON_URI="
 	https://tukaani.org/xz/xz-${VERSION_XZ}.tar.gz
 	https://zlib.net/zlib-${VERSION_ZLIB}.tar.gz
 	https://github.com/facebook/zstd/archive/v${VERSION_ZSTD}.tar.gz -> zstd-${VERSION_ZSTD}.tar.gz
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/keyutils-${VERSION_KEYUTILS}.tar.gz
 "
 
 if [[ ${PV} == 9999* ]] ; then
@@ -88,9 +90,9 @@ if [[ ${PV} == 9999* ]] ; then
 	S="${WORKDIR}/${P}"
 	SRC_URI="${COMMON_URI}"
 else
-	SRC_URI="https://dev.gentoo.org/~whissi/dist/genkernel/${P}.tar.xz
+	SRC_URI="https://dev.gentoo.org/~mattst88/distfiles/${P}.tar.xz
 		${COMMON_URI}"
-	KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+	KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 fi
 
 DESCRIPTION="Gentoo automatic kernel building scripts"
@@ -112,22 +114,26 @@ RDEPEND="${PYTHON_DEPS}
 	app-arch/cpio
 	>=app-misc/pax-utils-1.2.2
 	app-portage/elt-patches
+	app-portage/portage-utils
 	dev-util/gperf
 	sys-apps/sandbox
 	sys-devel/autoconf
 	sys-devel/autoconf-archive
 	sys-devel/automake
+	sys-devel/bc
+	sys-devel/bison
+	sys-devel/flex
 	sys-devel/libtool
 	virtual/pkgconfig
+	elibc_glibc? ( sys-libs/glibc[static-libs(+)] )
 	firmware? ( sys-kernel/linux-firmware )"
 
 if [[ ${PV} == 9999* ]]; then
 	DEPEND="${DEPEND} app-text/asciidoc"
 fi
 
-
 PATCHES=(
-	"${FILESDIR}"/add-crypt-roots-support-${PV}.patch	
+	"${FILESDIR}"/${P}-add-crypt-roots-support.patch
 )
 
 src_unpack() {
@@ -292,7 +298,7 @@ pkg_postinst() {
 	fi
 
 	local n_root_args=$(grep -o -- '\<root=' /proc/cmdline 2>/dev/null | wc -l)
-	if [[ ${n_root_args} > 1 ]] ; then
+	if [[ ${n_root_args} -gt 1 ]] ; then
 		ewarn "WARNING: Multiple root arguments (root=) on kernel command-line detected!"
 		ewarn "If you are appending non-persistent device names to kernel command-line,"
 		ewarn "next reboot could fail in case running system and initramfs do not agree"

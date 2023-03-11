@@ -1,7 +1,7 @@
-diff -Naur genkernel-4.2.1.orig/defaults/initrd.scripts genkernel-4.2.1/defaults/initrd.scripts
---- genkernel-4.2.1.orig/defaults/initrd.scripts	2021-03-27 22:09:40.000000000 +0900
-+++ genkernel-4.2.1/defaults/initrd.scripts	2021-04-01 10:57:35.991418836 +0900
-@@ -1843,6 +1843,12 @@
+diff -Naur genkernel-4.3.2.orig/defaults/initrd.scripts genkernel-4.3.2/defaults/initrd.scripts
+--- genkernel-4.3.2.orig/defaults/initrd.scripts	2021-07-09 06:09:46.000000000 +0900
++++ genkernel-4.3.2/defaults/initrd.scripts	2021-07-13 21:57:48.241878750 +0900
+@@ -1841,6 +1841,12 @@
  		exit 1
  	fi
  
@@ -13,8 +13,8 @@ diff -Naur genkernel-4.2.1.orig/defaults/initrd.scripts genkernel-4.2.1/defaults
 +
  	while true
  	do
- 		local gpg_cmd=""
-@@ -2344,7 +2350,11 @@
+ 		# Reset cryptsetup_options on each iteration
+@@ -2346,7 +2352,11 @@
  
  	if [ -n "${CRYPT_ROOT}" ]
  	then
@@ -27,7 +27,7 @@ diff -Naur genkernel-4.2.1.orig/defaults/initrd.scripts genkernel-4.2.1/defaults
  		if [ -n "${REAL_ROOT}" ]
  		then
  			# Rescan volumes
-@@ -2394,6 +2404,7 @@
+@@ -2396,6 +2406,7 @@
  	write_env_file \
  		"${CRYPT_ENV_FILE}" \
  		CRYPT_ROOT \
@@ -35,9 +35,9 @@ diff -Naur genkernel-4.2.1.orig/defaults/initrd.scripts genkernel-4.2.1/defaults
  		CRYPT_ROOT_OPTIONS \
  		CRYPT_SILENT \
  		CRYPT_SWAP \
-diff -Naur genkernel-4.2.1.orig/defaults/linuxrc genkernel-4.2.1/defaults/linuxrc
---- genkernel-4.2.1.orig/defaults/linuxrc	2021-03-27 22:09:40.000000000 +0900
-+++ genkernel-4.2.1/defaults/linuxrc	2021-04-01 10:57:00.067418026 +0900
+diff -Naur genkernel-4.3.2.orig/defaults/linuxrc genkernel-4.3.2/defaults/linuxrc
+--- genkernel-4.3.2.orig/defaults/linuxrc	2021-07-09 06:09:46.000000000 +0900
++++ genkernel-4.3.2/defaults/linuxrc	2021-07-13 21:57:48.241878750 +0900
 @@ -214,8 +214,9 @@
  			ISCSI_NOIBFT=1
  		;;
