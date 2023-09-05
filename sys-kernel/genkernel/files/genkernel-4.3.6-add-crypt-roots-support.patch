@@ -1,6 +1,6 @@
-diff -Naur genkernel-4.3.5.orig/defaults/initrd.scripts genkernel-4.3.5/defaults/initrd.scripts
---- genkernel-4.3.5.orig/defaults/initrd.scripts	2023-07-06 03:25:05.000000000 +0900
-+++ genkernel-4.3.5/defaults/initrd.scripts	2023-07-24 22:04:39.066353120 +0900
+diff -Naur genkernel-4.3.6.orig/defaults/initrd.scripts genkernel-4.3.6/defaults/initrd.scripts
+--- genkernel-4.3.6.orig/defaults/initrd.scripts	2023-09-05 21:36:17.000234221 +0900
++++ genkernel-4.3.6/defaults/initrd.scripts	2023-09-05 21:36:51.270813489 +0900
 @@ -1836,6 +1836,12 @@
  		exit 1
  	fi
@@ -35,9 +35,9 @@ diff -Naur genkernel-4.3.5.orig/defaults/initrd.scripts genkernel-4.3.5/defaults
  		CRYPT_ROOT_OPTIONS \
  		CRYPT_SILENT \
  		CRYPT_SWAP \
-diff -Naur genkernel-4.3.5.orig/defaults/linuxrc genkernel-4.3.5/defaults/linuxrc
---- genkernel-4.3.5.orig/defaults/linuxrc	2023-07-06 03:25:05.000000000 +0900
-+++ genkernel-4.3.5/defaults/linuxrc	2023-07-24 22:04:39.069686511 +0900
+diff -Naur genkernel-4.3.6.orig/defaults/linuxrc genkernel-4.3.6/defaults/linuxrc
+--- genkernel-4.3.6.orig/defaults/linuxrc	2023-09-05 21:36:17.003567611 +0900
++++ genkernel-4.3.6/defaults/linuxrc	2023-09-05 21:36:51.270813489 +0900
 @@ -214,8 +214,9 @@
  			ISCSI_NOIBFT=1
  		;;
