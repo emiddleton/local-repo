@@ -1,0 +1,44 @@
+diff -Naur genkernel-4.3.8.orig/defaults/initrd.scripts genkernel-4.3.8/defaults/initrd.scripts
+--- genkernel-4.3.8.orig/defaults/initrd.scripts	2023-11-05 00:49:15.481962682 +0900
++++ genkernel-4.3.8/defaults/initrd.scripts	2023-11-05 12:49:54.405346666 +0900
+@@ -1954,7 +1954,7 @@
+ 			prompt_user "LUKS_KEYDEV" "${LUKS_NAME} key device"
+ 			KEYDEV_ERROR=0
+ 		else
+-			LUKS_DEVICE=$(find_real_device "${LUKS_DEVICE}")
++			LUKS_DEVICE=$(find_real_device "${LUKS_DEVICE% *}")
+ 			if [ -z "${LUKS_DEVICE}" ]
+ 			then
+ 				bad_msg "Failed to find LUKS device. If crypt_${1} kernel command-line argument is correct you are probably missing kernel support for your storage!" ${CRYPT_SILENT}
+@@ -2157,8 +2157,17 @@
+ 			fi
+ 
+ 			# At this point, {header,key}file or not, we're ready!
+-			crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEVICE} ${LUKS_NAME}" "${ASK_PASS}"
+-			crypt_filter_ret=$?
++			crypt_filter_ret=0;i=0
++			for LUKS_DEV in $(echo "${LUKS_DEVICE}"|tr ' ' '\n'); do
++				if [ "$i" -eq "0" ]; then
++					luks_name=${LUKS_NAME}
++				else
++					luks_name="${LUKS_NAME}${i}"
++				fi
++				crypt_filter "${gpg_cmd}cryptsetup ${cryptsetup_options} luksOpen ${LUKS_DEV} ${luks_name}" "${ASK_PASS}"
++				crypt_filter_ret=$((crypt_filter_ret+$?))
++				i=$((i+1))
++			done
+ 
+ 			[ -e /dev/tty.org ] \
+ 				&& run rm -f /dev/tty \
+diff -Naur genkernel-4.3.8.orig/defaults/linuxrc genkernel-4.3.8/defaults/linuxrc
+--- genkernel-4.3.8.orig/defaults/linuxrc	2023-11-05 00:49:15.485296073 +0900
++++ genkernel-4.3.8/defaults/linuxrc	2023-11-05 00:49:36.515652772 +0900
+@@ -227,7 +227,7 @@
+ 		;;
+ 		# Crypto
+ 		crypt_root=*)
+-			CRYPT_ROOT=${x#*=}
++			CRYPT_ROOT="${CRYPT_ROOT} ${x#*=}"
+ 			USE_CRYPTSETUP=1
+ 		;;
+ 		crypt_root_options=*)
